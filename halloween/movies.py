@@ -24,7 +24,7 @@ def crawl():
         r.raise_for_status()
     except Exception as e:
         log.info(e)
-        return
+        return 1
 
     soup = BeautifulSoup(r.content, "html.parser")
 
@@ -47,11 +47,13 @@ def crawl():
     #     for movie in movies[date]:
     #         print(movie)
 
-    print(
-        json.dumps(
-            movies,
-            indent=4,
-            # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
-            ensure_ascii=False
-        )
-    )
+    # print(
+    #     json.dumps(
+    #         movies,
+    #         indent=4,
+    #         # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
+    #         ensure_ascii=False
+    #     )
+    # )
+
+    return 0, movies

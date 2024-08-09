@@ -1,6 +1,4 @@
 import sys
-import requests
-from bs4 import BeautifulSoup
 import logging
 import halloween.movies as halloween_movies
 import christmas.movies as christmas_movies
@@ -12,12 +10,15 @@ log = logging
 halloween_crawler = halloween_movies
 christmas_crawler = christmas_movies
 
+def store_movies(movies):
+    pass
+
 
 def crawl_christmas():
     # Crawl for Christmas Movies
-    status_code = christmas_movies.crawl()
+    status = christmas_movies.crawl()
 
-    if status_code is 0:
+    if status is 0:
         log.info("Christmas movie schedule crawl complete!")
     else:
         log.info("Error. Something went wrong.")
@@ -25,12 +26,14 @@ def crawl_christmas():
 
 def crawl_halloween():
     # Crawl for Halloween Movies
-    status_code = halloween_movies.crawl()
+    status, movies = halloween_movies.crawl()
 
-    if status_code is 0:
+    if status is 0:
         log.info("Halloween movie schedule crawl complete!")
+        store_movies(movies)
     else:
         log.info("Error. Something went wrong.")
+        return
 
 
 if __name__ == "__main__":
