@@ -2,7 +2,8 @@ import sys
 import logging
 import halloween.movies as halloween_movies
 import christmas.movies as christmas_movies
-import calendar
+
+import publish
 
 logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
 log = logging
@@ -12,7 +13,7 @@ halloween_crawler = halloween_movies
 christmas_crawler = christmas_movies
 
 def store_movies(movies):
-    calendar.store(movies)
+    publish.store(movies)
 
 
 def crawl_christmas():
