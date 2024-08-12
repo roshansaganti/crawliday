@@ -52,6 +52,6 @@ def crawl():
             movies,
             indent=4,
             # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
-            ensure_ascii=False
+            ensure_ascii=False,
         )
     )
