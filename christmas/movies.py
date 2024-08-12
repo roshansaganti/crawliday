@@ -11,6 +11,7 @@ url_list = [
     "https://christmastvschedule.com/",
 ]
 
+
 def crawl():
     dates = []
     movie_times = []
@@ -22,7 +23,7 @@ def crawl():
     times = []
 
     headers = {
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36',
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36",
     }
 
     try:
@@ -42,11 +43,7 @@ def crawl():
     #     )
 
     # Get year of schedule
-    year = (
-        soup.find(class_="czr-title")
-        .string.split(" ")[0]
-        .strip()
-    )
+    year = soup.find(class_="czr-title").string.split(" ")[0].strip()
 
     # Validate current year match
     if int(year) == datetime.now().year:
@@ -106,4 +103,3 @@ def crawl():
     # print(json.dumps(showtimes, indent=4))
     # print(showtimes[13])
     print(movies)
-
