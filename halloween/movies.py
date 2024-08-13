@@ -30,22 +30,24 @@ def crawl():
 
     test = soup.find(class_="cm-entry-summary").findAll("p")
 
-    test = [element for i, element in enumerate(test) if i not in [0, 1, 2, 3, 7]]
+    test = [element for i, element in enumerate(test) if i not in [0, 1, 2, 3, 7, 8]]
 
     for item in test:
         if item.strong:
-            time = item.find_next("li").text
+            listings = item.find_next("li").text.split("\n")
 
-            movies[item.text] = []
-            movies[item.text].append(time)
+            for listing in listings:
+                ticket = listing.split("–")
+                time = ticket[0].strip()
+                name = ticket[1].strip()
 
-    # TODO: Set up Google Calendar Integration
-
-    # TODO: Add movies to Google Calendar
-    # for date in movies.keys():
-    #     print(date)
-    #     for movie in movies[date]:
-    #         print(movie)
+                if item.text in movies:
+                    movies[item.text][time] = []
+                    movies[item.text][time] = name
+                else:
+                    movies[item.text] = {}
+                    movies[item.text][time] = []
+                    movies[item.text][time] = name
 
     # print(
     #     json.dumps(
