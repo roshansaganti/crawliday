@@ -1,3 +1,8 @@
+"""
+API Reference: https://developers.google.com/calendar/api/v3/reference#Events
+"""
+
+import json
 import time
 import os.path
 from datetime import datetime
@@ -12,10 +17,10 @@ from googleapiclient.errors import HttpError
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 # Variables
-calendar_id = "fd973e69753e0730ef2ff2627ab0e983fce4944c220d7c39e4469031743bc764@group.calendar.google.com"
+calendar_id = "67527d508ed63b7e7362a0ea43a2d28a8ffc4983ecf413e7c7f302306694f4bd@group.calendar.google.com"
 
 
-def create(movies):
+def get_credentials():
     """Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
     """
@@ -35,6 +40,12 @@ def create(movies):
         # Save the credentials for the next run
         with open("token.json", "w") as token:
             token.write(creds.to_json())
+
+    return creds
+
+
+def create(movies):
+    creds = get_credentials()
 
     for date in movies:
         date_to_format = datetime.strptime(date, "%A, %B %d, %Y")
@@ -66,7 +77,6 @@ def create(movies):
                 "reminders": {
                     "useDefault": False,
                     "overrides": [
-                        {"method": "email", "minutes": 24 * 60},
                         {"method": "popup", "minutes": 10},
                     ],
                 },
@@ -96,3 +106,44 @@ def update():
 
 def delete():
     pass
+
+
+# Remove all events for the calendar
+def truncate():
+    creds = get_credentials()
+
+    date = datetime.now()
+
+    print(date.year)
+
+    # TODO: Get a list of all events for the current year
+    try:
+        service = build("calendar", "v3", credentials=creds)
+
+        # Trucate all events in calendar for the current year
+        events = (
+            service.events()
+            .list(calendarId=calendar_id, timeMin="2024-10-01T00:00:00-0000")
+            .execute()
+        )
+
+        # print(json.dumps(events, indent=4))
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+
+    # Check if there are events to delete
+    if len(events["items"]) == 0:
+        print("no events found")
+    else:
+        print("found existing events, ready to delete")
+        # TODO: Delete each event in a for loop
+
+        # try:
+        #     service = build("calendar", "v3", credentials=creds)
+
+        #     # Trucate all events in calendar for the current year
+        #     service.events().delete(calendarId="primary", eventId="eventId").execute()
+
+        # except HttpError as error:
+        #     print(f"An error occurred: {error}")
