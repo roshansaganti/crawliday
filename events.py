@@ -86,6 +86,7 @@ def create(movies):
                 },
             }
 
+            # Create event
             try:
                 service = build("calendar", "v3", credentials=creds)
 
@@ -95,9 +96,11 @@ def create(movies):
                     .insert(calendarId=calendar_id, body=event)
                     .execute()
                 )
-
+                log.info("Created event {}".format(event["id"]))
             except HttpError as error:
                 log.info(f"An error occurred: {error}")
+
+    log.info("Creation complete")
 
 
 def read():
@@ -153,7 +156,7 @@ def truncate():
                     calendarId=calendar_id, eventId=event["id"]
                 ).execute()
 
-                log.info("Event {} deleted".format(event["id"]))
+                log.info("Deleted event {}".format(event["id"]))
             except HttpError as error:
                 log.info(f"An error occurred: {error}")
 
