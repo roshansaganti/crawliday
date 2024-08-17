@@ -19,42 +19,47 @@ url_list = [
 def crawl():
     movies = {}
 
-    try:
-        r = requests.get(url_list[4])
-        r.raise_for_status()
-    except Exception as e:
-        log.info(e)
-        return 1
+    year = datetime.now().year
 
-    soup = BeautifulSoup(r.content, "html.parser")
+    for url in url_list:
+        try:
+            r = requests.get(url)
+            r.raise_for_status()
+        except Exception as e:
+            log.info(e)
+            return 1
 
-    test = soup.find(class_="cm-entry-summary").findAll("p")
+        soup = BeautifulSoup(r.content, "html.parser")
 
-    test = [element for i, element in enumerate(test) if i not in [0, 1, 2, 3, 7, 8]]
+        test = soup.find(class_="cm-entry-summary").findAll("p")
 
-    for item in test:
-        if item.strong:
-            listings = item.find_next("li").text.split("\n")
+        test = [element for i, element in enumerate(test)]
 
-            for listing in listings:
-                ticket = listing.split("–")
-                time = ticket[0].strip()
-                name = ticket[1].strip()
+        for item in test:
+            if str(year) in item.text and item.strong:
+                listings = item.find_next_siblings()[0].text[1:-1].split("\n")
 
-                if item.text in movies:
-                    movies[item.text][time] = []
-                    movies[item.text][time] = name
-                else:
-                    movies[item.text] = {}
-                    movies[item.text][time] = []
-                    movies[item.text][time] = name
+                for listing in listings:
+                    ticket = listing.split("–")
+
+                    if len(ticket) == 2:
+                        time = ticket[0].strip()
+                        name = ticket[1].strip()
+
+                    if item.text in movies:
+                        movies[item.text][time] = []
+                        movies[item.text][time] = name
+                    else:
+                        movies[item.text] = {}
+                        movies[item.text][time] = []
+                        movies[item.text][time] = name
 
     # print(
     #     json.dumps(
     #         movies,
     #         indent=4,
     #         # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
-    #         ensure_ascii=False
+    #         ensure_ascii=False,
     #     )
     # )
 
