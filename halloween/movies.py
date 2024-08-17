@@ -31,13 +31,11 @@ def crawl():
 
         soup = BeautifulSoup(r.content, "html.parser")
 
-        test = soup.find(class_="cm-entry-summary").findAll("p")
+        dates = soup.find(class_="cm-entry-summary").findAll("p")
 
-        test = [element for i, element in enumerate(test)]
-
-        for item in test:
-            if str(year) in item.text and item.strong:
-                listings = item.find_next_siblings()[0].text[1:-1].split("\n")
+        for date in dates:
+            if str(year) in date.text and date.strong:
+                listings = date.find_next_siblings()[0].text[1:-1].split("\n")
 
                 for listing in listings:
                     ticket = listing.split("–")
@@ -46,13 +44,13 @@ def crawl():
                         time = ticket[0].strip()
                         name = ticket[1].strip()
 
-                    if item.text in movies:
-                        movies[item.text][time] = []
-                        movies[item.text][time] = name
+                    if date.text in movies:
+                        movies[date.text][time] = []
+                        movies[date.text][time] = name
                     else:
-                        movies[item.text] = {}
-                        movies[item.text][time] = []
-                        movies[item.text][time] = name
+                        movies[date.text] = {}
+                        movies[date.text][time] = []
+                        movies[date.text][time] = name
 
     # print(
     #     json.dumps(
