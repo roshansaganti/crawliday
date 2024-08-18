@@ -21,9 +21,13 @@ jobs:
       - name: "Build"
         env:
           GOOGLE_CALENDAR_API_SVC_CREDS: ${{ secrets.GOOGLE_CALENDAR_API_SVC_CREDS }}
+          GOOGLE_CALENDAR_API_TOKEN: ${{ secrets.GOOGLE_CALENDAR_API_TOKEN }}
+          GOOGLE_CALENDAR_API_CREDENTIALS: ${{ secrets.GOOGLE_CALENDAR_API_CREDENTIALS }}
         run: |
           pip install -r requirements.txt
           echo "$GOOGLE_CALENDAR_API_SVC_CREDS"
+          echo "$GOOGLE_CALENDAR_API_TOKEN"
+          echo "$GOOGLE_CALENDAR_API_CREDENTIALS"
           echo "$GOOGLE_CALENDAR_API_SVC_CREDS" >> svc-crawliday.json
           ls -la
           cat svc-crawliday.json
