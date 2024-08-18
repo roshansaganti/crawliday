@@ -14,10 +14,10 @@ jobs:
     container: python:3.12-alpine
 
     steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v2"
-        with:
-          ref: ${{ github.ref }}
+      # - name: "Checkout"
+      #   uses: "actions/checkout@v2"
+      #   with:
+      #     ref: ${{ github.ref }}
       - name: "Build"
         run: |
           python --version
