@@ -1,4 +1,4 @@
-name: "bump-version"
+name: Bump version workflow
 
 on:
   push:
@@ -10,28 +10,22 @@ on:
 
 jobs:
   bump-version:
-    name: "Bump Version on master"
-    runs-on: ubuntu-latest
-
+    name: Bump package version
+    if: "!contains(github.event.head_commit.message, 'Bump version')"
+    runs-on: ubuntu-20.04
     steps:
-      - name: "Checkout source code"
-        uses: "actions/checkout@v2"
+      - name: actions/checkout
+        uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref }}
-      - name: "cat version"
-        run: cat ./version
-      - name: "Automated Version Bump"
-        id: version-bump
-        uses: "phips28/gh-action-bump-version@master"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
+      - name: current_version
+        run: echo "current_version=$(grep '# version' version | cut -d ' ' -f3)" >> $GITHUB_ENV
+      - name: FragileTech/bump-version
+        uses: FragileTech/bump-version@main
         with:
-          major-wording: "major"
-          minor-wording: "minor"
-          patch-wording: "patch"
-      - name: "cat version"
-        run: cat ./version
-      - name: "Output Step"
-        env:
-          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
-        run: echo "new tag $NEW_TAG"
+          current_version: "${{ env.current_version }}"
+          files: version
+          commit_name: Your Company Bot
+          commit_email: bot@your-company.com
+          login: your-bot-login
+          token: "${{ secrets.BOT_TOKEN }}"
