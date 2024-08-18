@@ -19,4 +19,6 @@ jobs:
       #   with:
       #     ref: ${{ github.ref }}
       - name: "Build"
-        run: python --version
+        run: |
+          python --version
+          pip --version
