@@ -17,11 +17,23 @@ url_list = [
 
 
 def crawl():
+    # Variables
     movies = {}
-
     year = datetime.now().year
 
     for url in url_list:
+        # Get channel name
+        if url == url_list[0]:
+            channel = "Turner Classic Movies (TCM)"
+        elif url == url_list[1]:
+            channel = "Syfy"
+        elif url == url_list[2]:
+            channel = "Freeform"
+        elif url == url_list[3]:
+            channel = "MeTV"
+        elif url == url_list[4]:
+            channel = "Movies! TV Network"
+
         try:
             r = requests.get(url)
             r.raise_for_status()
@@ -33,10 +45,12 @@ def crawl():
 
         dates = soup.find(class_="cm-entry-summary").findAll("p")
 
+        # Iterate through the dates
         for date in dates:
             if str(year) in date.text and date.strong:
                 listings = date.find_next_siblings()[0].text[1:-1].split("\n")
 
+                # Iterate through the movie listings
                 for listing in listings:
                     ticket = listing.split("–")
 
@@ -44,21 +58,28 @@ def crawl():
                         time = ticket[0].strip()
                         name = ticket[1].strip()
 
-                    if date.text in movies:
-                        movies[date.text][time] = []
-                        movies[date.text][time] = name
+                    # If channel exists, just add new key value pairs
+                    if channel in movies:
+                        # If date exists, just add new key value pairs
+                        if date.text in movies[channel]:
+                            movies[channel][date.text][time] = name
+                        # If date does NOT exist, create empty dictionaries
+                        else:
+                            movies[channel][date.text] = {}
+                            movies[channel][date.text][time] = name
+                    # If channel does NOT exist, create empty dictionaries
                     else:
-                        movies[date.text] = {}
-                        movies[date.text][time] = []
-                        movies[date.text][time] = name
+                        movies[channel] = {}
+                        movies[channel][date.text] = {}
+                        movies[channel][date.text][time] = name
 
-    # print(
-    #     json.dumps(
-    #         movies,
-    #         indent=4,
-    #         # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
-    #         ensure_ascii=False,
-    #     )
-    # )
+    print(
+        json.dumps(
+            movies,
+            indent=4,
+            # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
+            ensure_ascii=False,
+        )
+    )
 
     return 0, movies
