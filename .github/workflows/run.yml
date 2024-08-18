@@ -24,5 +24,6 @@ jobs:
         run: |
           pip install -r requirements.txt
           echo "$GOOGLE_CALENDAR_API_SVC_CREDS" >> svc-crawliday.json
+          ls -la
           cat svc-crawliday.json
           python crawl.py halloween
