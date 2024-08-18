@@ -48,57 +48,70 @@ def get_credentials():
     return creds
 
 
+# Create new events
 def create(movies):
     creds = get_credentials()
 
-    for date in movies:
-        date_to_format = datetime.strptime(date, "%A, %B %d, %Y")
-        movie_date = date_to_format.strftime("%Y-%m-%d")
-        for movie in movies[date]:
-            name = movies[date][movie]
+    # Iterate through the JSON object
+    for channel in movies:
+        for date in movies[channel]:
+            date_to_format = datetime.strptime(date, "%A, %B %d, %Y")
+            movie_date = date_to_format.strftime("%Y-%m-%d")
+            for movie in movies[channel][date]:
+                name = movies[channel][date][movie]
 
-            time_to_format = time.strptime(movie, "%I:%M%p")
-            movie_time = time.strftime("%H:%M:%S%z", time_to_format)
+                time_to_format = time.strptime(movie, "%I:%M%p")
+                movie_time = time.strftime("%H:%M:%S%z", time_to_format)
 
-            event = {
-                "summary": name,
-                # "location": "800 Howard St., San Francisco, CA 94103",
-                # "description": "A chance to hear more about Google's developer products.",
-                "start": {
-                    # "dateTime": "2015-05-28T09:00:00-07:00",
-                    "dateTime": "{}T{}".format(movie_date, movie_time),
-                    "timeZone": "America/New_York",
-                },
-                "end": {
-                    "dateTime": "{}T{}".format(movie_date, movie_time),
-                    "timeZone": "America/Los_Angeles",
-                },
-                # "recurrence": ["RRULE:FREQ=DAILY;COUNT=1"],
-                # "attendees": [
-                #     {"email": "lpage@example.com"},
-                #     {"email": "sbrin@example.com"},
-                # ],
-                "reminders": {
-                    "useDefault": False,
-                    "overrides": [
-                        {"method": "popup", "minutes": 10},
-                    ],
-                },
-            }
+                event = {
+                    "summary": name,
+                    "location": channel,
+                    # "description": "A chance to hear more about Google's developer products.",
+                    "start": {
+                        # "dateTime": "2015-05-28T09:00:00-07:00",
+                        "dateTime": "{}T{}".format(movie_date, movie_time),
+                        "timeZone": "America/New_York",
+                    },
+                    "end": {
+                        "dateTime": "{}T{}".format(movie_date, movie_time),
+                        "timeZone": "America/Los_Angeles",
+                    },
+                    # "recurrence": ["RRULE:FREQ=DAILY;COUNT=1"],
+                    # "attendees": [
+                    #     {"email": "lpage@example.com"},
+                    #     {"email": "sbrin@example.com"},
+                    # ],
+                    "reminders": {
+                        "useDefault": False,
+                        "overrides": [
+                            {"method": "popup", "minutes": 10},
+                        ],
+                    },
+                }
 
-            # Create event
-            try:
-                service = build("calendar", "v3", credentials=creds)
+                # Debugging
+                # print(
+                #     json.dumps(
+                #         event,
+                #         indent=4,
+                #         # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
+                #         ensure_ascii=False,
+                #     )
+                # )
 
-                # Add movies to calendar
-                event = (
-                    service.events()
-                    .insert(calendarId=calendar_id, body=event)
-                    .execute()
-                )
-                log.info("Created event {}".format(event["id"]))
-            except HttpError as error:
-                log.info(f"An error occurred: {error}")
+                # Create event
+                try:
+                    service = build("calendar", "v3", credentials=creds)
+
+                    # Add movies to calendar
+                    event = (
+                        service.events()
+                        .insert(calendarId=calendar_id, body=event)
+                        .execute()
+                    )
+                    log.info("Created event {}".format(event["id"]))
+                except HttpError as error:
+                    log.info(f"An error occurred: {error}")
 
     log.info("Creation complete")
 
@@ -115,7 +128,7 @@ def delete():
     pass
 
 
-# Remove all events for the calendar
+# Remove all events for the current year
 def truncate():
     creds = get_credentials()
 
