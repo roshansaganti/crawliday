@@ -18,8 +18,8 @@ jobs:
         uses: "actions/checkout@v2"
         with:
           ref: ${{ github.ref }}
-      - name: "cat package.json"
-        run: cat ./package.json
+      - name: "cat version"
+        run: cat ./version
       - name: "Automated Version Bump"
         id: version-bump
         uses: "phips28/gh-action-bump-version@master"
@@ -29,8 +29,8 @@ jobs:
           major-wording: "major"
           minor-wording: "minor"
           patch-wording: "patch"
-      - name: "cat package.json"
-        run: cat ./package.json
+      - name: "cat version"
+        run: cat ./version
       - name: "Output Step"
         env:
           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
