@@ -8,11 +8,12 @@ import time
 import os.path
 from datetime import datetime
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
+# from google.auth.transport.requests import Request
+# from google.oauth2.credentials import Credentials
+# from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from google.oauth2 import service_account
 
 logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
 log = logging
@@ -28,24 +29,26 @@ def get_credentials():
     """Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
     """
-    creds = None
+    # creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
+    # if os.path.exists("token.json"):
+    #     creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    # # If there are no (valid) credentials available, let the user log in.
+    # if not creds or not creds.valid:
+    #     if creds and creds.expired and creds.refresh_token:
+    #         creds.refresh(Request())
+    #     else:
+    #         # flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+    #         # creds = flow.run_local_server(port=0)
+    #     # Save the credentials for the next run
+    #     # with open("token.json", "w") as token:
+    #     #     token.write(creds.to_json())
 
-    return creds
+    # Get credentials for service account
+    # https://github.com/googleapis/google-api-python-client/blob/main/docs/oauth.md#service-account-credentials
+    return service_account.Credentials.from_service_account_file("svc-crawliday.json")
 
 
 # Create new events
@@ -174,3 +177,21 @@ def truncate():
                 log.info(f"An error occurred: {error}")
 
     log.info("Truncation complete")
+
+
+# Test function
+def test_credentials():
+    creds = get_credentials()
+
+    # print(creds)
+
+    # Get a list of all events for the current year
+    try:
+        service = build("calendar", "v3", credentials=creds)
+
+        # Get all events in calendar for the current year
+        events = service.events().list(calendarId=calendar_id, maxResults=1).execute()
+    except HttpError as error:
+        log.error(f"An error occurred: {error}")
+
+    print(events)

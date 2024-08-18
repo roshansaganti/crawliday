@@ -14,6 +14,7 @@ christmas_crawler = christmas_movies
 
 
 def store_movies(movies):
+    # events.test_credentials()
     events.truncate()
     events.create(movies)
 
