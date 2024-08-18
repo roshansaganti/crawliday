@@ -48,6 +48,7 @@ def crawl():
         # Iterate through the dates
         for date in dates:
             if str(year) in date.text and date.strong:
+                # [1:-1] will remove the first and last items
                 listings = date.find_next_siblings()[0].text[1:-1].split("\n")
 
                 # Iterate through the movie listings
