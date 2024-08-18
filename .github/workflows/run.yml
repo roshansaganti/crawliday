@@ -20,7 +20,5 @@ jobs:
           repository: ${{ github.repository }}
       - name: "Build"
         run: |
-          python --version
-          pip --version
-          ls -la
           pip install -r requirements.txt
+          python crawl.py halloween
