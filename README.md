@@ -1,3 +1,7 @@
+<!-- [![bump-version](https://github.com/roshansaganti/crawliday/actions/workflows/bump-version.yml/badge.svg)](https://github.com/roshansaganti/crawliday/actions/workflows/bump-version.yml) -->
+
+[![run](https://github.com/roshansaganti/crawliday/actions/workflows/run.yml/badge.svg)](https://github.com/roshansaganti/crawliday/actions/workflows/run.yml)
+
 # Crawliday
 
 Crawl websites for holiday-themed movies like Halloween and Christmas and then add them to a Google Calendar.
