@@ -17,9 +17,6 @@ jobs:
       contents: "read"
       id-token: "write"
 
-    # outputs:
-    #   creds: ${{ steps.auth.outputs.credentials_file_path }}
-
     steps:
       - name: "Checkout"
         id: checkout
@@ -35,7 +32,7 @@ jobs:
       - name: "Run"
         run: |
           pip install -r requirements.txt
-          echo "${{ secrets.TEST }}" >> svc-crawliday.json
-          ls -la
-          cat svc-crawliday.json
+          echo "${{ secrets.TEST3 }}" >> svc-crawliday.json
+          # ls -la
+          # cat svc-crawliday.json
           python crawl.py halloween
