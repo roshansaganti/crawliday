@@ -31,8 +31,8 @@ jobs:
       #     credentials_json: "${{ secrets.TEST }}"
       - name: "Run"
         run: |
-          # pip install -r requirements.txt
-          echo '${{ secrets.TEST3 }}' >> svc-crawliday.json
-          # ls -la
-          cat svc-crawliday.json
-          # python crawl.py halloween
+          pip install -r requirements.txt
+          echo '${{ secrets.TEST }}' >> svc-crawliday.json
+          ls -la
+          # cat svc-crawliday.json
+          python crawl.py halloween
