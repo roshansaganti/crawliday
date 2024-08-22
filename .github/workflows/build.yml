@@ -24,8 +24,8 @@ jobs:
           repository: ${{ github.repository }}
       # - name: "Fetch Google Cloud Service Account Credentials"
       - uses: "google-github-actions/auth@v2"
-        # with:
-        #   # create_credentials_file: true
+        with:
+          # create_credentials_file: true
           credentials_json: "test"
         # credentials_file_path: "svc-crawliday.json"
       # - name: "Run"
