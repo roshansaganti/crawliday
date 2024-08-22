@@ -34,9 +34,7 @@ jobs:
       #     credentials_json: "${{ secrets.TEST }}"
       - name: "Run"
         run: |
-          # pip install -r requirements.txt
-          # echo "$GOOGLE_CALENDAR_API_TOKEN"
-          # echo "$GOOGLE_CALENDAR_API_CREDENTIALS"
+          pip install -r requirements.txt
           echo "${{ secrets.TEST }}" >> svc-crawliday.json
           ls -la
           cat svc-crawliday.json
