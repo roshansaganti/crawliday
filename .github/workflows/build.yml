@@ -35,7 +35,7 @@ jobs:
           # credentials_file_path: "svc-crawliday.json"
       - name: "Run"
         run: |
-          echo "${{ steps.auth.outputs }}"
+          echo "${{ toJson(steps.auth.outputs) }}"
           # pip install -r requirements.txt
           # echo "$GOOGLE_CALENDAR_API_SVC_CREDS"
           # echo "$GOOGLE_CALENDAR_API_TOKEN"
