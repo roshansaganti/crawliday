@@ -22,7 +22,7 @@ log = logging
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 # Variables
-calendar_id = "67527d508ed63b7e7362a0ea43a2d28a8ffc4983ecf413e7c7f302306694f4bd@group.calendar.google.com"
+calendar_id = "ca7da6c54a1155fc464bbd8d8b88efd5fde618bce86388052d2933f796b92b9b@group.calendar.google.com"
 
 
 def get_credentials():
@@ -53,6 +53,10 @@ def get_credentials():
 
 # Create new events
 def create(movies):
+    log.info("Creating events...")
+
+    created_events = 0
+
     creds = get_credentials()
 
     # Iterate through the JSON object
@@ -104,7 +108,9 @@ def create(movies):
 
                 # Create event
                 try:
-                    service = build("calendar", "v3", credentials=creds)
+                    service = build(
+                        "calendar", "v3", credentials=creds, cache_discovery=False
+                    )
 
                     # Add movies to calendar
                     event = (
@@ -112,11 +118,12 @@ def create(movies):
                         .insert(calendarId=calendar_id, body=event)
                         .execute()
                     )
-                    log.info("Created event {}".format(event["id"]))
+                    # log.info("Created event {}".format(event["id"]))
+                    created_events += 1
                 except HttpError as error:
                     log.info(f"An error occurred: {error}")
 
-    log.info("Creation complete")
+    log.info("Created {} events".format(created_events))
 
 
 def read():
@@ -133,6 +140,8 @@ def delete():
 
 # Remove all events for the current year
 def truncate():
+    truncated_events = 0
+
     creds = get_credentials()
 
     date = datetime.now()
@@ -141,7 +150,7 @@ def truncate():
 
     # Get a list of all events for the current year
     try:
-        service = build("calendar", "v3", credentials=creds)
+        service = build("calendar", "v3", credentials=creds, cache_discovery=False)
 
         # Get all events in calendar for the current year
         events = (
@@ -162,21 +171,26 @@ def truncate():
     else:
         log.info("Found {} events".format(len(events["items"])))
 
+        log.info("Truncating events...")
+
         # Delete each event
         for event in events["items"]:
             try:
-                service = build("calendar", "v3", credentials=creds)
+                service = build(
+                    "calendar", "v3", credentials=creds, cache_discovery=False
+                )
 
                 # Trucate all events in calendar
                 service.events().delete(
                     calendarId=calendar_id, eventId=event["id"]
                 ).execute()
 
-                log.info("Deleted event {}".format(event["id"]))
+                # log.info("Deleted event {}".format(event["id"]))
+                truncated_events += 1
             except HttpError as error:
                 log.info(f"An error occurred: {error}")
 
-    log.info("Truncation complete")
+    log.info("Truncated {} events".format(truncated_events))
 
 
 # Test function
@@ -187,7 +201,7 @@ def test_credentials():
 
     # Get a list of all events for the current year
     try:
-        service = build("calendar", "v3", credentials=creds)
+        service = build("calendar", "v3", credentials=creds, cache_discovery=False)
 
         # Get all events in calendar for the current year
         events = service.events().list(calendarId=calendar_id, maxResults=1).execute()
