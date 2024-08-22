@@ -27,7 +27,7 @@ jobs:
         with:
           # create_credentials_file: true
           credentials_json: "${{ secrets.TEST }}"
-        # credentials_file_path: "svc-crawliday.json"
+          credentials_file_path: "svc-crawliday.json"
       # - name: "Run"
       #   # env:
       #   # GOOGLE_CALENDAR_API_SVC_CREDS: ${{ secrets.GOOGLE_CALENDAR_API_SVC_CREDS }}
