@@ -34,5 +34,5 @@ jobs:
           pip install -r requirements.txt
           echo '${{ secrets.TEST }}' >> svc-crawliday.json
           ls -la
-          # cat svc-crawliday.json
+          cat svc-crawliday.json
           python crawl.py halloween
