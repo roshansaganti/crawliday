@@ -18,28 +18,28 @@ jobs:
       id-token: "write"
 
     steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
+      # - name: "Checkout"
+      - uses: "actions/checkout@v4"
         with:
           repository: ${{ github.repository }}
-      - name: "Fetch Google Cloud Service Account Credentials"
-        uses: "google-github-actions/auth@v2"
+      # - name: "Fetch Google Cloud Service Account Credentials"
+      - uses: "google-github-actions/auth@v2"
         with:
           # create_credentials_file: true
           credentials_json: "${{ secrets.GOOGLE_CALENDAR_API_SVC_CREDS }}"
           # credentials_file_path: "svc-crawliday.json"
-      - name: "Run"
-        # env:
-        # GOOGLE_CALENDAR_API_SVC_CREDS: ${{ secrets.GOOGLE_CALENDAR_API_SVC_CREDS }}
-        # GOOGLE_CALENDAR_API_TOKEN: ${{ secrets.GOOGLE_CALENDAR_API_TOKEN }}
-        # GOOGLE_CALENDAR_API_CREDENTIALS: ${{ secrets.GOOGLE_CALENDAR_API_CREDENTIALS }}
-        # TEST_SECRET: ${{ secrets.TEST_SECRET }}
-        run: |
-          pip install -r requirements.txt
-          # echo "$GOOGLE_CALENDAR_API_SVC_CREDS"
-          # echo "$GOOGLE_CALENDAR_API_TOKEN"
-          # echo "$GOOGLE_CALENDAR_API_CREDENTIALS"
-          # echo "$GOOGLE_CALENDAR_API_SVC_CREDS" >> svc-crawliday.json
-          ls -la
-          # cat svc-crawliday.json
-          # python crawl.py halloween
+      # - name: "Run"
+      #   # env:
+      #   # GOOGLE_CALENDAR_API_SVC_CREDS: ${{ secrets.GOOGLE_CALENDAR_API_SVC_CREDS }}
+      #   # GOOGLE_CALENDAR_API_TOKEN: ${{ secrets.GOOGLE_CALENDAR_API_TOKEN }}
+      #   # GOOGLE_CALENDAR_API_CREDENTIALS: ${{ secrets.GOOGLE_CALENDAR_API_CREDENTIALS }}
+      #   # TEST_SECRET: ${{ secrets.TEST_SECRET }}
+      #   run: |
+      #     pip install -r requirements.txt
+      #     # echo "$GOOGLE_CALENDAR_API_SVC_CREDS"
+      #     # echo "$GOOGLE_CALENDAR_API_TOKEN"
+      #     # echo "$GOOGLE_CALENDAR_API_CREDENTIALS"
+      #     # echo "$GOOGLE_CALENDAR_API_SVC_CREDS" >> svc-crawliday.json
+      #     ls -la
+      #     # cat svc-crawliday.json
+      #     # python crawl.py halloween
