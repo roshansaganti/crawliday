@@ -26,7 +26,7 @@ jobs:
       - uses: "google-github-actions/auth@v2"
         with:
           # create_credentials_file: true
-          credentials_json: "${{ secrets.TEST2 }}"
+          credentials_json: "${{ secrets.TEST }}"
         # credentials_file_path: "svc-crawliday.json"
       # - name: "Run"
       #   # env:
