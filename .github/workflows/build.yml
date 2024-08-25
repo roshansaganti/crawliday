@@ -32,9 +32,7 @@ jobs:
       - name: "Run"
         run: |
           pip install -r requirements.txt
-          cat<<'EOF'
           echo '${{ secrets.TEST }}' >> svc-crawliday.json
-          EOF
           # ls -la
           cat svc-crawliday.json
           python crawl.py halloween
