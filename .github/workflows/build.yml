@@ -1,0 +1,40 @@
+name: "build"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  # schedule:
+  #   - cron: "0 0 * * */1"
+
+jobs:
+  run:
+    name: "Build"
+    runs-on: ubuntu-latest
+    container: python:3.12-alpine
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: "Checkout"
+        id: checkout
+        uses: "actions/checkout@v4"
+        with:
+          repository: ${{ github.repository }}
+      # - name: "Fetch Google Cloud Service Account Credentials"
+      #   id: auth
+      #   uses: "google-github-actions/auth@v2"
+      #   with:
+      #     # create_credentials_file: true
+      #     credentials_json: "${{ secrets.TEST }}"
+      - name: "Run"
+        run: |
+          pip install -r requirements.txt
+          cat<<'EOF'
+          echo '${{ secrets.TEST }}' >> svc-crawliday.json
+          EOF
+          # ls -la
+          cat svc-crawliday.json
+          python crawl.py halloween
