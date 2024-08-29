@@ -5,7 +5,7 @@ API Reference: https://developers.google.com/calendar/api/v3/reference#Events
 import logging
 import json
 import time
-import os.path
+import os
 from datetime import datetime
 
 # from google.auth.transport.requests import Request
@@ -22,7 +22,7 @@ log = logging
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 # Variables
-calendar_id = "ca7da6c54a1155fc464bbd8d8b88efd5fde618bce86388052d2933f796b92b9b@group.calendar.google.com"
+calendar_id = os.environ["GOOGLE_CALENDAR_ID"]
 
 
 def get_credentials():
@@ -48,7 +48,7 @@ def get_credentials():
 
     # Get credentials for service account
     # https://github.com/googleapis/google-api-python-client/blob/main/docs/oauth.md#service-account-credentials
-    return service_account.Credentials.from_service_account_file("svc-crawliday.json")
+    return service_account.Credentials.from_service_account_file("credentials.json")
 
 
 # Create new events
