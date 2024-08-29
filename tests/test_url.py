@@ -1,6 +1,5 @@
 import unittest
 
-# import requests
 from halloween import movies as hm
 
 
