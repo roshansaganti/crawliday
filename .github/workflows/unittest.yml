@@ -22,4 +22,6 @@ jobs:
         with:
           repository: ${{ github.repository }}
       - name: "Run Unit Tests"
-        run: python -m unittest discover
+        run: |
+          pip install -r requirements.txt
+          python -m unittest discover
