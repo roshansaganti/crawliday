@@ -15,18 +15,6 @@ The following command will create a new Python environment using the Pipfile.loc
 pipenv sync
 ```
 
-## Run program
-
-```
-python crawl.py {argument}
-```
-
-### Available Arguments
-
-`halloween` - For fetching Halloween movies
-
-`christmas` - For fetching Christmas movies
-
 ## Setting Up Your Google Calendar
 
 ### Create a Google Calendar
@@ -35,6 +23,12 @@ How to create a Google Calendar:
 https://support.google.com/calendar/answer/37095?hl=en
 
 ### Find Your Calendar's ID
+
+Create a new `.env` file in your root directory and populate it like so:
+
+```
+GOOGLE_CALENDAR_ID={{ CALENDAR_ID }}
+```
 
 ### Authentication
 
@@ -45,15 +39,13 @@ There are two methods to authenticate to your Google Calendar:
 
 For this project, I've decided to use a `service account` as this will allow the application to operate with no user intervention.
 
-**Note:** Although the option exists, Google does not recommend the use of `API Keys` to authenticate to `Google Calendar API`.
+**Note:** Although the option exists, Google does **not** recommend the use of `API Keys` to authenticate to `Google Calendar API`.
 
 #### OAuth Consent
 
-#### Create Google Cloud Service Account
+#### Google Cloud Service Account
 
-##### Download Credentials JSON File
-
-Your credentials file should look like this:
+Download your credentials JSON file from Google Cloud. Your credentials file will look like this:
 
 ```
 {
@@ -72,3 +64,15 @@ Your credentials file should look like this:
 ```
 
 Save your credentials as `credentials.json` and store it into the root of the project.
+
+## Run program
+
+```
+python crawl.py {{ ARG }}
+```
+
+### Available Arguments
+
+`halloween` - For fetching Halloween movies
+
+`christmas` - For fetching Christmas movies
