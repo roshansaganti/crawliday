@@ -1,5 +1,6 @@
-[![bump-version](https://github.com/roshansaganti/crawliday/actions/workflows/bump-version.yml/badge.svg)](https://github.com/roshansaganti/crawliday/actions/workflows/bump-version.yml)
 [![build](https://github.com/roshansaganti/crawliday/actions/workflows/build.yml/badge.svg)](https://github.com/roshansaganti/crawliday/actions/workflows/build.yml)
+[![bump-version](https://github.com/roshansaganti/crawliday/actions/workflows/bump-version.yml/badge.svg)](https://github.com/roshansaganti/crawliday/actions/workflows/bump-version.yml)
+[![lint](https://github.com/roshansaganti/crawliday/actions/workflows/lint.yml/badge.svg)](https://github.com/roshansaganti/crawliday/actions/workflows/lint.yml)
 
 # Crawliday
 
