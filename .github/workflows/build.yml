@@ -5,11 +5,13 @@ on:
     branches:
       - "master"
   # schedule:
-  #   - cron: "0 0 * * */1"
+  #   # Run every Sunday at midnight (00:00)
+  #   # https://crontab.guru/#0_0_*_*_0
+  #   - cron: "0 0 * * 0"
 
 jobs:
-  run:
-    name: "Build"
+  halloween:
+    name: "Crawl Halloween Movies"
     runs-on: ubuntu-latest
     container: python:3.12-alpine
 
@@ -25,8 +27,31 @@ jobs:
           repository: ${{ github.repository }}
       - name: "Run"
         env:
-          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
         run: |
           echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
           pip install -r requirements.txt
           python crawl.py halloween
+  christmas:
+    if: false
+    name: "Crawl Christmas Movies"
+    runs-on: ubuntu-latest
+    container: python:3.12-alpine
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: "Checkout"
+        id: checkout
+        uses: "actions/checkout@v4"
+        with:
+          repository: ${{ github.repository }}
+      - name: "Run"
+        env:
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_CHRISTMAS_ID }}
+        run: |
+          echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
+          pip install -r requirements.txt
+          python crawl.py christmas
