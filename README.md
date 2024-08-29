@@ -76,3 +76,13 @@ python crawl.py {{ ARG }}
 `halloween` - For fetching Halloween movies
 
 `christmas` - For fetching Christmas movies
+
+## Running Unit Tests
+
+Run the following command in the root of the directory:
+
+```
+python -m unittest discover
+```
+
+All tests are located in the `tests/` directory
