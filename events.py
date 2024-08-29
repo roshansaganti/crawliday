@@ -2,15 +2,12 @@
 API Reference: https://developers.google.com/calendar/api/v3/reference#Events
 """
 
+# import json
 import logging
-import json
 import time
 import os
 from datetime import datetime
 
-# from google.auth.transport.requests import Request
-# from google.oauth2.credentials import Credentials
-# from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google.oauth2 import service_account
@@ -26,29 +23,11 @@ calendar_id = os.environ["GOOGLE_CALENDAR_ID"]
 
 
 def get_credentials():
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
-    # creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    # if os.path.exists("token.json"):
-    #     creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    # # If there are no (valid) credentials available, let the user log in.
-    # if not creds or not creds.valid:
-    #     if creds and creds.expired and creds.refresh_token:
-    #         creds.refresh(Request())
-    #     else:
-    #         # flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-    #         # creds = flow.run_local_server(port=0)
-    #     # Save the credentials for the next run
-    #     # with open("token.json", "w") as token:
-    #     #     token.write(creds.to_json())
-
     # Get credentials for service account
-    # https://github.com/googleapis/google-api-python-client/blob/main/docs/oauth.md#service-account-credentials
-    return service_account.Credentials.from_service_account_file("credentials.json")
+    # https://github.com/googleapis/google-api-python-client/blob/main/docs/oauth.md#service-account-credentials # noqa
+    return service_account.Credentials.from_service_account_file(
+        "credentials.json"
+    )
 
 
 # Create new events
@@ -73,7 +52,7 @@ def create(movies):
                 event = {
                     "summary": name,
                     "location": channel,
-                    # "description": "A chance to hear more about Google's developer products.",
+                    # "description": "",
                     "start": {
                         # "dateTime": "2015-05-28T09:00:00-07:00",
                         "dateTime": "{}T{}".format(movie_date, movie_time),
@@ -101,7 +80,6 @@ def create(movies):
                 #     json.dumps(
                 #         event,
                 #         indent=4,
-                #         # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-with-json-dumps-as-utf-8-not-as-a-u-escape-sequence
                 #         ensure_ascii=False,
                 #     )
                 # )
@@ -109,7 +87,10 @@ def create(movies):
                 # Create event
                 try:
                     service = build(
-                        "calendar", "v3", credentials=creds, cache_discovery=False
+                        "calendar",
+                        "v3",
+                        credentials=creds,
+                        cache_discovery=False,
                     )
 
                     # Add movies to calendar
@@ -118,10 +99,9 @@ def create(movies):
                         .insert(calendarId=calendar_id, body=event)
                         .execute()
                     )
-                    # log.info("Created event {}".format(event["id"]))
                     created_events += 1
                 except HttpError as error:
-                    log.info(f"An error occurred: {error}")
+                    log.error(f"An error occurred: {error}")
 
     log.info("Created {} events".format(created_events))
 
@@ -150,7 +130,9 @@ def truncate():
 
     # Get a list of all events for the current year
     try:
-        service = build("calendar", "v3", credentials=creds, cache_discovery=False)
+        service = build(
+            "calendar", "v3", credentials=creds, cache_discovery=False
+        )
 
         # Get all events in calendar for the current year
         events = (
@@ -188,7 +170,7 @@ def truncate():
                 # log.info("Deleted event {}".format(event["id"]))
                 truncated_events += 1
             except HttpError as error:
-                log.info(f"An error occurred: {error}")
+                log.error(f"An error occurred: {error}")
 
     log.info("Truncated {} events".format(truncated_events))
 
@@ -201,10 +183,16 @@ def test_credentials():
 
     # Get a list of all events for the current year
     try:
-        service = build("calendar", "v3", credentials=creds, cache_discovery=False)
+        service = build(
+            "calendar", "v3", credentials=creds, cache_discovery=False
+        )
 
         # Get all events in calendar for the current year
-        events = service.events().list(calendarId=calendar_id, maxResults=1).execute()
+        events = (
+            service.events()
+            .list(calendarId=calendar_id, maxResults=1)
+            .execute()
+        )
     except HttpError as error:
         log.error(f"An error occurred: {error}")
 
