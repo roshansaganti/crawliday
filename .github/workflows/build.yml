@@ -25,13 +25,14 @@ jobs:
         uses: "actions/checkout@v4"
         with:
           repository: ${{ github.repository }}
-      - name: "Run"
+      - name: "Install Dependencies"
+        run: pip install -r requirements.txt
+      - name: "Generate Credentials JSON File"
         env:
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
-        run: |
-          echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
-          pip install -r requirements.txt
-          python crawl.py halloween
+        run: echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
+      - name: "Run"
+        run: python crawl.py halloween
   christmas:
     # Disable job
     if: false
