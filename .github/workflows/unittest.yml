@@ -24,8 +24,8 @@ jobs:
       - name: "Install Dependencies"
         run: pip install -r requirements.txt
       - name: "Generate Credentials JSON File"
-        env:
-          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
         run: echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
       - name: "Run Unit Tests"
+        env:
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
         run: python -m unittest discover
