@@ -23,18 +23,10 @@ jobs:
         uses: "actions/checkout@v4"
         with:
           repository: ${{ github.repository }}
-      # - name: "Fetch Google Cloud Service Account Credentials"
-      #   id: auth
-      #   uses: "google-github-actions/auth@v2"
-      #   with:
-      #     # create_credentials_file: true
-      #     credentials_json: "${{ secrets.TEST }}"
       - name: "Run"
         env:
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
         run: |
+          echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
           pip install -r requirements.txt
-          echo '${{ secrets.TEST }}' >> credentials.json
-          # ls -la
-          cat credentials.json
           python crawl.py halloween
