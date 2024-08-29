@@ -3,7 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import logging
 from datetime import datetime
-import json
+
+# import json
 
 log = logging.getLogger(__name__)
 
@@ -13,17 +14,17 @@ url_list = [
 
 
 def crawl():
-    dates = []
-    movie_times = []
-    movie_titles = []
+    # dates = []
+    # movie_times = []
+    # movie_titles = []
 
     movies = {}
 
-    dates = []
-    times = []
+    # dates = []
+    # times = []
 
     headers = {
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36",  # noqa
     }
 
     try:
@@ -55,7 +56,7 @@ def crawl():
 
     # Get all dates
     schedule = soup.find(class_="czr-wp-the-content").findAll("p")
-    showtimes = soup.find(class_="czr-wp-the-content").findAll("li")
+    # showtimes = soup.find(class_="czr-wp-the-content").findAll("li")
 
     # print(schedule[3])
 
