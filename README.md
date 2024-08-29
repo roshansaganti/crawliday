@@ -60,7 +60,7 @@ Your credentials file should look like this:
   "type": "service_account",
   "project_id": "***",
   "private_key_id": "***",
-  "private_key": "-----BEGINPRIVATEKEY-----\n-----ENDPRIVATEKEY-----\n",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----\n",
   "client_email": "***",
   "client_id": "***",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
