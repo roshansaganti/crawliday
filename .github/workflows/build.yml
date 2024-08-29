@@ -30,6 +30,8 @@ jobs:
       #     # create_credentials_file: true
       #     credentials_json: "${{ secrets.TEST }}"
       - name: "Run"
+        env:
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
         run: |
           pip install -r requirements.txt
           echo '${{ secrets.TEST }}' >> credentials.json
