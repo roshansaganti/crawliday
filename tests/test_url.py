@@ -1,4 +1,5 @@
 import unittest
+import os
 
 # Halloween imports
 from halloween import movies as hm
@@ -30,6 +31,14 @@ class TestChristmas(unittest.TestCase):
 
 # Test Google Cloud
 class TestGoogleCloud(unittest.TestCase):
+    # Test environment variables exist
+    def test_calendar_id(self):
+        calendar_id = os.environ["GOOGLE_CALENDAR_ID"]
+
+        # Assertions
+        self.assertTrue(calendar_id)
+        self.assertTrue(calendar_id.endswith("@group.calendar.google.com"))
+
     # Test Google Cloud Service Account Credentials
     def test_get_credentials(self):
         creds = events.get_credentials()

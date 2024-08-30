@@ -28,4 +28,4 @@ jobs:
       - name: "Run Unit Tests"
         env:
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
-        run: python -m unittest discover
+        run: python -m unittest discover -v
