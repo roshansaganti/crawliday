@@ -36,6 +36,7 @@ class TestGoogleCloud(unittest.TestCase):
         calendar_id = os.environ["GOOGLE_CALENDAR_ID"]
 
         # Assertions
+        self.assertTrue(calendar_id)
         self.assertTrue(calendar_id.endswith("@group.calendar.google.com"))
 
     # Test Google Cloud Service Account Credentials
