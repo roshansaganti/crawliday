@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     container: python:3.12-alpine
 
+    env:
+      GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
+
     permissions:
       contents: "read"
       id-token: "write"
@@ -28,8 +31,6 @@ jobs:
       - name: "Install Dependencies"
         run: pip install -r requirements.txt
       - name: "Generate Credentials JSON File"
-        env:
-          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
         run: echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
       - name: "Run"
         run: python crawl.py halloween
@@ -39,6 +40,9 @@ jobs:
     name: "Crawl Christmas Movies"
     runs-on: ubuntu-latest
     container: python:3.12-alpine
+
+    env:
+      GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_CHRISTMAS_ID }}
 
     permissions:
       contents: "read"
@@ -51,8 +55,6 @@ jobs:
         with:
           repository: ${{ github.repository }}
       - name: "Run"
-        env:
-          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_CHRISTMAS_ID }}
         run: |
           echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
           pip install -r requirements.txt

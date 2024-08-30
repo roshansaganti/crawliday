@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     container: python:3.12-alpine
 
+    env:
+      GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
+
     permissions:
       contents: "read"
       id-token: "write"
@@ -26,6 +29,4 @@ jobs:
       - name: "Generate Credentials JSON File"
         run: echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
       - name: "Run Unit Tests"
-        env:
-          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_HALLOWEEN_ID }}
         run: python -m unittest discover -v
