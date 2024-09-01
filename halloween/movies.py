@@ -56,7 +56,13 @@ def crawl():
                     ticket = listing.split("–")
 
                     if len(ticket) == 2:
-                        time = ticket[0].strip()
+                        if (
+                            ticket[0].find("am") != -1
+                            or ticket[0].find("pm") != -1
+                        ):
+                            time = ticket[0].strip()
+                        else:
+                            break
                         name = ticket[1].strip()
 
                     # If channel exists, just add new key value pairs

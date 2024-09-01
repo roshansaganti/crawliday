@@ -41,7 +41,9 @@ def create(movies):
     # Iterate through the JSON object
     for channel in movies:
         for date in movies[channel]:
-            date_to_format = datetime.strptime(date, "%A, %B %d, %Y")
+            date_to_format = datetime.strptime(
+                date.replace(",", ""), "%A %B %d %Y"
+            )
             movie_date = date_to_format.strftime("%Y-%m-%d")
             for movie in movies[channel][date]:
                 name = movies[channel][date][movie]
