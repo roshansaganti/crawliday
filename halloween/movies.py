@@ -8,7 +8,7 @@ from datetime import datetime
 log = logging.getLogger(__name__)
 
 url_list = [
-    "https://www.halloweenmoviesontv.com/turner-classic-movies-october-horror/",  # noqa
+    # "https://www.halloweenmoviesontv.com/turner-classic-movies-october-horror/",  # noqa
     "https://www.halloweenmoviesontv.com/syfy-31-days-of-halloween/",
     "https://www.halloweenmoviesontv.com/abc-family-13-nights-of-halloween-schedule/",  # noqa
     "https://www.halloweenmoviesontv.com/metv-svengoolies-halloween-boonanza/",
@@ -33,6 +33,8 @@ def crawl():
             channel = "MeTV"
         elif url == url_list[4]:
             channel = "Movies! TV Network"
+
+        log.info("Crawling movies from channel {}...".format(channel))
 
         try:
             r = requests.get(url)
