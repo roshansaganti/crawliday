@@ -39,7 +39,7 @@ def crawl_halloween():
 
     if status == 0:
         log.info("Halloween movie schedule crawl complete!")
-        store_movies(movies)
+        # store_movies(movies)
     else:
         log.info("Error. Something went wrong.")
         return
