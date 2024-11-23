@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import logging
-from datetime import datetime
 
 # import json
 
@@ -13,13 +12,8 @@ url_list = [
 
 
 def crawl():
-    # dates = []
-    # movie_times = []
-    # movie_titles = []
-    # times = []
-
+    output = []
     movies = {}
-    year = datetime.now().year
 
     headers = {
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36",  # noqa
@@ -34,41 +28,51 @@ def crawl():
 
     soup = BeautifulSoup(r.content, "html.parser")
 
-    # print(
-    #     soup.find(class_="czr-wp-the-content").findAll("ul")[0]
-    #     # .string.split(" ")[0]
-    #     # .strip()
-    # )
+    # Remove all 'span' tags from the HTML
+    for s in soup(["span"]):
+        s.extract()
 
-    # Get year of dates
-    # year = soup.find(class_="czr-title").string.split(" ")[0].strip()
+    # print(spans)
 
-    # # Validate current year match
-    # if int(year) == datetime.now().year:
-    #     log.info("Correct year! Proceeding!")
-    #     # return 0
-    # else:
-    #     log.error("Incorrect year! Quitting!")
-    #     return 1
+    # for span in spans:
+    #     print(span.text)
 
     # Get all dates
-    dates = soup.find(class_="czr-wp-the-content").findAll("p")
+    dates = soup.find(class_="czr-wp-the-content").findAll("h3")
+    # showtimes = soup.find(class_="czr-wp-the-content").findAll("p")
     # showtimes = soup.find(class_="czr-wp-the-content").findAll("li")
 
-    print(len(dates))
+    # print(len(dates))
 
-    # temp_date = ""
-    # temp_time = ""
+    # Remove header text
+    dates.pop(0)
+
+    # print(dates)
+
+    # Remove empty items
+    # for x in soup.find_all():
+    #     print((x.text))
+    #     # print(len(x.b.text))
+    #     if len(x.get_text(strip=True)) == 0:
+    #         print("yes")
+    #         print(x.text)
+    #         x.extract()
 
     for date in dates:
-        # print(date.b)
-        # print(date.get_text())
-        # print(date.span)
-        # print(date.strong)
+        # print(date)
 
-        if str(year) in date.text:
-            print(date.text)
-            # print(date.b)
+        # if date.b.text == "":
+        #     dates.remove(date)
+
+        # print(date.b.text)
+
+        # if date.b.find_next_sibling():
+        #     print("DELETE BELOW")
+        #     print(date.b.find_next_sibling())
+        #     print("DELETE ABOVE")
+        # dates.remove(date.b.span.text)
+
+        output.append(date.b.text)
 
         # lines = date.get_text().strip().splitlines()
         # if len(lines) > 1:
@@ -106,5 +110,9 @@ def crawl():
     # print(json.dumps(showtimes, indent=4))
     # print(showtimes[13])
     # print(movies)
+
+    # Store output to file
+    with open("output.txt", mode="wt", encoding="utf-8") as f:
+        f.write("\n".join(output))
 
     return 0, movies
