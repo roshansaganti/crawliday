@@ -23,10 +23,11 @@ def crawl_christmas():
     log.info("Crawling Christmas movies...")
 
     # Crawl for Christmas Movies
-    status = christmas_movies.crawl()
+    status, movies = christmas_movies.crawl()
 
     if status == 0:
         log.info("Christmas movie schedule crawl complete!")
+        # store_movies(movies)
     else:
         log.info("Error. Something went wrong.")
 

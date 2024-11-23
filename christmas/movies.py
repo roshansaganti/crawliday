@@ -17,11 +17,10 @@ def crawl():
     # dates = []
     # movie_times = []
     # movie_titles = []
+    # times = []
 
     movies = {}
-
-    # dates = []
-    # times = []
+    year = datetime.now().year
 
     headers = {
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36",  # noqa
@@ -37,70 +36,76 @@ def crawl():
     soup = BeautifulSoup(r.content, "html.parser")
 
     # print(
-    #     soup.find(class_="czr-wp-the-content")
-    #     .findAll("ul")[0]
+    #     soup.find(class_="czr-wp-the-content").findAll("ul")[0]
     #     # .string.split(" ")[0]
     #     # .strip()
-    #     )
+    # )
 
-    # Get year of schedule
-    year = soup.find(class_="czr-title").string.split(" ")[0].strip()
+    # Get year of dates
+    # year = soup.find(class_="czr-title").string.split(" ")[0].strip()
 
-    # Validate current year match
-    if int(year) == datetime.now().year:
-        log.info("Correct year! Proceeding!")
-        # return 0
-    else:
-        log.error("Incorrect year! Quitting!")
-        return 1
+    # # Validate current year match
+    # if int(year) == datetime.now().year:
+    #     log.info("Correct year! Proceeding!")
+    #     # return 0
+    # else:
+    #     log.error("Incorrect year! Quitting!")
+    #     return 1
 
     # Get all dates
-    schedule = soup.find(class_="czr-wp-the-content").findAll("p")
+    dates = soup.find(class_="czr-wp-the-content").findAll("p")
     # showtimes = soup.find(class_="czr-wp-the-content").findAll("li")
 
-    # print(schedule[3])
+    print(len(dates))
 
     # temp_date = ""
     # temp_time = ""
 
-    for date in schedule:
+    for date in dates:
         # print(date.b)
         # print(date.get_text())
         # print(date.span)
+        # print(date.strong)
 
-        lines = date.get_text().strip().splitlines()
-        if len(lines) > 1:
-            for line in lines:
+        if str(year) in date.text:
+            print(date.text)
+            # print(date.b)
 
-                temp_date = ""
-                temp_time = ""
-                # Showtime
-                if re.search(r"am|pm ", line):
-                    if line[0].isdigit():
-                        temp_time = line
-                        # times.append(line)
-                        pass
-                        # print(line)
-                        # print("this is a showtime")
-                # Date
-                elif re.search(r",", line):
-                    temp_date = line
-                    pass
-                    # print(line)
-                    # print("this is a date")
+        # lines = date.get_text().strip().splitlines()
+        # if len(lines) > 1:
+        #     for line in lines:
 
-                # print(temp_date)
-                # print(temp_time)
+        #         temp_date = ""
+        #         temp_time = ""
+        #         # Showtime
+        #         if re.search(r"am|pm ", line):
+        #             if line[0].isdigit():
+        #                 temp_time = line
+        #                 # times.append(line)
+        #                 pass
+        #                 # print(line)
+        #                 # print("this is a showtime")
+        #         # Date
+        #         elif re.search(r",", line):
+        #             temp_date = line
+        #             pass
+        #             # print(line)
+        #             # print("this is a date")
 
-                # TODO: Store into JSON object
-                if not temp_date == "" and not temp_time == "":
-                    movies[temp_date] = temp_time
+        #         # print(temp_date)
+        #         # print(temp_time)
 
-                print(movies)
+        #         # TODO: Store into JSON object
+        #         if not temp_date == "" and not temp_time == "":
+        #             movies[temp_date] = temp_time
+
+        # print(movies)
 
         # print("INCREMENT DATE")
 
     # showtimes = json.loads(showtimes)
     # print(json.dumps(showtimes, indent=4))
     # print(showtimes[13])
-    print(movies)
+    # print(movies)
+
+    return 0, movies
