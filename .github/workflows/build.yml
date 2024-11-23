@@ -33,7 +33,7 @@ jobs:
       - name: "Generate Credentials JSON File"
         run: echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
       - name: "Run"
-        run: python crawl.py halloween
+        run: python main.py halloween
   christmas:
     # Disable job
     if: false
@@ -58,4 +58,4 @@ jobs:
         run: |
           echo '${{ secrets.GOOGLE_CLOUD_SVC_CREDS }}' >> credentials.json
           pip install -r requirements.txt
-          python crawl.py christmas
+          python main.py christmas

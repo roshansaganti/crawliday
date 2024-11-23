@@ -107,3 +107,5 @@ def crawl():
     # print(json.dumps(showtimes, indent=4))
     # print(showtimes[13])
     # print(movies)
+
+    return 0, movies
