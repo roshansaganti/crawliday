@@ -37,13 +37,21 @@ def crawl():
         channel = showtime.find("td", class_="column-5").text
 
         # Parse showtimes into dictionary
-        movies.append(
-            {
-                "date": date,
-                "time": time,
-                "title": title,
-                "channel": channel,
-            }
-        )
+        if (
+            not date == ""
+            or not time == ""
+            or not title == ""
+            or not channel == ""
+        ):
+            movies.append(
+                {
+                    "date": date,
+                    "time": time,
+                    "title": title,
+                    "channel": channel,
+                }
+            )
+
+    print(movies)
 
     return 0, movies
