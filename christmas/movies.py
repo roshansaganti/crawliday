@@ -12,7 +12,6 @@ url_list = [
 
 
 def crawl():
-    output = []
     movies = []
 
     headers = {
@@ -37,17 +36,6 @@ def crawl():
         title = showtime.find("td", class_="column-4").text
         channel = showtime.find("td", class_="column-5").text
 
-        # Date
-        output.append(showtime.find("td", class_="column-2").text)
-        # Time
-        output.append(showtime.find("td", class_="column-3").text)
-        # Title
-        output.append(showtime.find("td", class_="column-4").text)
-        # Channel
-        output.append(showtime.find("td", class_="column-5").text)
-
-        output.append("\n\n")
-
         # Parse showtimes into dictionary
         movies.append(
             {
@@ -57,9 +45,5 @@ def crawl():
                 "channel": channel,
             }
         )
-
-    # Store output to file
-    with open("output.txt", mode="wt", encoding="utf-8") as f:
-        f.write("\n".join(output))
 
     return 0, movies
