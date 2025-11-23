@@ -31,79 +31,50 @@ def get_credentials():
 
 
 # Create new events
-def create(movies):
+def create(type, movies):
     log.info("Creating events...")
 
     created_events = 0
 
-    creds = get_credentials()
-
     # Iterate through the JSON object
-    for channel in movies:
-        for date in movies[channel]:
+    if type == "christmas":
+        for movie in movies:
+            name = movie["title"]
+            channel = movie["channel"]
+
             date_to_format = datetime.strptime(
-                date.replace(",", ""), "%A %B %d %Y"
+                f"{datetime.now().year} {movie["date"]}", "%Y %a %m/%d"
             )
             movie_date = date_to_format.strftime("%Y-%m-%d")
-            for movie in movies[channel][date]:
-                name = movies[channel][date][movie]
 
-                time_to_format = time.strptime(movie, "%I:%M%p")
-                movie_time = time.strftime("%H:%M:%S%z", time_to_format)
+            time_to_format = time.strptime(movie["time"], "%I:%M %p")
+            movie_time = time.strftime("%H:%M:%S%z", time_to_format)
 
-                event = {
-                    "summary": name,
-                    "location": channel,
-                    # "description": "",
-                    "start": {
-                        # "dateTime": "2015-05-28T09:00:00-07:00",
-                        "dateTime": "{}T{}".format(movie_date, movie_time),
-                        "timeZone": "America/New_York",
-                    },
-                    "end": {
-                        "dateTime": "{}T{}".format(movie_date, movie_time),
-                        "timeZone": "America/Los_Angeles",
-                    },
-                    # "recurrence": ["RRULE:FREQ=DAILY;COUNT=1"],
-                    # "attendees": [
-                    #     {"email": "lpage@example.com"},
-                    #     {"email": "sbrin@example.com"},
-                    # ],
-                    "reminders": {
-                        "useDefault": False,
-                        "overrides": [
-                            {"method": "popup", "minutes": 10},
-                        ],
-                    },
-                }
+            # Create event
+            response = store_event(movie_date, movie_time, name, channel)
 
-                # Debugging
-                # print(
-                #     json.dumps(
-                #         event,
-                #         indent=4,
-                #         ensure_ascii=False,
-                #     )
-                # )
+            if response == 0:
+                created_events += 1
+    else:
+        for channel in movies:
+            for date in movies[channel]:
+                date_to_format = datetime.strptime(
+                    date.replace(",", ""), "%A %B %d %Y"
+                )
+                movie_date = date_to_format.strftime("%Y-%m-%d")
+                for movie in movies[channel][date]:
+                    name = movies[channel][date][movie]
 
-                # Create event
-                try:
-                    service = build(
-                        "calendar",
-                        "v3",
-                        credentials=creds,
-                        cache_discovery=False,
+                    time_to_format = time.strptime(movie, "%I:%M%p")
+                    movie_time = time.strftime("%H:%M:%S%z", time_to_format)
+
+                    # Create event
+                    response = store_event(
+                        movie_date, movie_time, name, channel
                     )
 
-                    # Add movies to calendar
-                    event = (
-                        service.events()
-                        .insert(calendarId=calendar_id, body=event)
-                        .execute()
-                    )
-                    created_events += 1
-                except HttpError as error:
-                    log.error(f"An error occurred: {error}")
+                    if response == 0:
+                        created_events += 1
 
     log.info("Created {} events".format(created_events))
 
