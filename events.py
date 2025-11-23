@@ -108,6 +108,29 @@ def create(movies):
     log.info("Created {} events".format(created_events))
 
 
+def store_event(event):
+    # Get credentials
+    creds = get_credentials()
+
+    # Create event
+    try:
+        service = build(
+            "calendar",
+            "v3",
+            credentials=creds,
+            cache_discovery=False,
+        )
+
+        # Add movies to calendar
+        event = (
+            service.events()
+            .insert(calendarId=calendar_id, body=event)
+            .execute()
+        )
+    except HttpError as error:
+        log.error(f"An error occurred: {error}")
+
+
 def read():
     pass
 
