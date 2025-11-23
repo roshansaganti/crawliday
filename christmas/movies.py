@@ -40,7 +40,7 @@ def crawl():
         if (
             not date == ""
             or not time == ""
-            or not title == ""
+            # or not title == ""
             or not channel == ""
         ):
             movies.append(
@@ -52,6 +52,6 @@ def crawl():
                 }
             )
 
-    print(movies)
+    # print(movies)
 
     return 0, movies
