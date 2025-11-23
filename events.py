@@ -147,8 +147,25 @@ def update():
     pass
 
 
-def delete():
-    pass
+def delete(event):
+    try:
+        service = build(
+            "calendar",
+            "v3",
+            credentials=get_credentials(),
+            cache_discovery=False,
+        )
+
+        # Trucate all events in calendar
+        service.events().delete(
+            calendarId=calendar_id, eventId=event["id"]
+        ).execute()
+
+        # log.info("Deleted event {}".format(event["id"]))
+        return 0
+    except HttpError as error:
+        log.error(f"An error occurred: {error}")
+        return 1
 
 
 # Remove all events for the current year
