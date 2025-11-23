@@ -108,9 +108,35 @@ def create(movies):
     log.info("Created {} events".format(created_events))
 
 
-def store_event(event):
+def store_event(date, time, name, channel):
     # Get credentials
     creds = get_credentials()
+
+    event = {
+        "summary": name,
+        "location": channel,
+        # "description": "",
+        "start": {
+            # "dateTime": "2015-05-28T09:00:00-07:00",
+            "dateTime": "{}T{}".format(date, time),
+            "timeZone": "America/New_York",
+        },
+        "end": {
+            "dateTime": "{}T{}".format(date, time),
+            "timeZone": "America/Los_Angeles",
+        },
+        # "recurrence": ["RRULE:FREQ=DAILY;COUNT=1"],
+        # "attendees": [
+        #     {"email": "lpage@example.com"},
+        #     {"email": "sbrin@example.com"},
+        # ],
+        "reminders": {
+            "useDefault": False,
+            "overrides": [
+                {"method": "popup", "minutes": 10},
+            ],
+        },
+    }
 
     # Create event
     try:
@@ -127,8 +153,10 @@ def store_event(event):
             .insert(calendarId=calendar_id, body=event)
             .execute()
         )
+        return 0
     except HttpError as error:
         log.error(f"An error occurred: {error}")
+        return 1
 
 
 def read():
