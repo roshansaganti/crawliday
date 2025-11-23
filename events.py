@@ -143,6 +143,7 @@ def truncate():
                 calendarId=calendar_id,
                 timeMin="{}-01-01T00:00:00-0000".format(date.year),
                 timeMax="{}-12-31T00:00:00-0000".format(date.year),
+                maxResults=2500,
             )
             .execute()
         )
