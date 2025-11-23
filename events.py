@@ -138,6 +138,15 @@ def store_event(date, time, name, channel):
         },
     }
 
+    # Debugging
+    # print(
+    #     json.dumps(
+    #         event,
+    #         indent=4,
+    #         ensure_ascii=False,
+    #     )
+    # )
+
     # Create event
     try:
         service = build(
