@@ -13,10 +13,10 @@ halloween_crawler = halloween_movies
 christmas_crawler = christmas_movies
 
 
-def store_movies(movies):
+def store_movies(type, movies):
     # events.test_credentials()
     events.truncate()
-    events.create(movies)
+    events.create(type, movies)
 
 
 def crawl_christmas():
@@ -27,7 +27,7 @@ def crawl_christmas():
 
     if status == 0:
         log.info("Christmas movie schedule crawl complete!")
-        # store_movies(movies)
+        store_movies(sys.argv[1], movies)
     else:
         log.info("Error. Something went wrong.")
 
@@ -40,7 +40,7 @@ def crawl_halloween():
 
     if status == 0:
         log.info("Halloween movie schedule crawl complete!")
-        store_movies(movies)
+        store_movies(sys.argv[1], movies)
     else:
         log.info("Error. Something went wrong.")
         return
