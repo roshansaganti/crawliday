@@ -4,7 +4,6 @@ API Reference: https://developers.google.com/calendar/api/v3/reference#Events
 
 # import json
 import logging
-from multiprocessing.pool import ThreadPool
 import time
 import os
 from datetime import datetime
@@ -207,16 +206,22 @@ def truncate():
 
         log.info("Truncating events...")
 
-        # Delete each event efficiently using ThreadPool
-        pool = ThreadPool(32)
+        # Delete each event
+        for event in events["items"]:
+            try:
+                service = build(
+                    "calendar", "v3", credentials=creds, cache_discovery=False
+                )
 
-        results = pool.map(delete, events["items"])
+                # Trucate all events in calendar
+                service.events().delete(
+                    calendarId=calendar_id, eventId=event["id"]
+                ).execute()
 
-        if len(results) > 0:
-            truncated_events = len(results)
-
-        pool.close()
-        pool.join()
+                # log.info("Deleted event {}".format(event["id"]))
+                truncated_events += 1
+            except HttpError as error:
+                log.error(f"An error occurred: {error}")
 
     log.info("Truncated {} events".format(truncated_events))
 
