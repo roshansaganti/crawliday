@@ -1,0 +1,22 @@
+services:
+  crawler:
+    container_name: crawler
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # It takes a while to start
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    environment:
+      # Doppler secrets
+      - DOPPLER_TOKEN=
+      - DOPPLER_CONFIG=dev
+      - DOPPLER_ENVIRONMENT=dev
+      - DOPPLER_PROJECT=crawliday
+      # Calendar IDs
+      - GOOGLE_CALENDAR_HALLOWEEN_ID=""
+      # - GOOGLE_CALENDAR_THANKSGIVING_ID=""
+      - GOOGLE_CALENDAR_CHRISTMAS_ID=""
+    volumes:
+      - .:/app
