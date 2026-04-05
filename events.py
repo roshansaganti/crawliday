@@ -149,24 +149,38 @@ def update():
 
 
 def delete(event):
-    try:
-        service = build(
-            "calendar",
-            "v3",
-            credentials=get_credentials(),
-            cache_discovery=False,
-        )
+    attempt = 0
 
-        # Trucate all events in calendar
-        service.events().delete(
-            calendarId=calendar_id, eventId=event["id"]
-        ).execute()
+    while True:
+        try:
+            service = build(
+                "calendar",
+                "v3",
+                credentials=get_credentials(),
+                cache_discovery=False,
+            )
 
-        # log.info("Deleted event {}".format(event["id"]))
-        return 0
-    except HttpError as error:
-        log.error(f"An error occurred: {error}")
-        return 1
+            # Trucate all events in calendar
+            service.events().delete(
+                calendarId=calendar_id, eventId=event["id"]
+            ).execute()
+
+            # log.info("Deleted event {}".format(event["id"]))
+            return 0
+        except HttpError as error:
+            if error.resp.status == 429:
+                sleep_time = 2**attempt
+                log.warning(
+                    "Rate limited, sleeping for {} seconds (attempt {})".format(
+                        sleep_time, attempt + 1
+                    )
+                )
+                time.sleep(sleep_time)
+                attempt += 1
+                continue
+            else:
+                log.error(f"An error occurred: {error}")
+                return 1
 
 
 # Remove all events for the current year
