@@ -20,6 +20,7 @@ log = logging
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 # Variables
+calendar_id = os.environ["GOOGLE_CALENDAR_ID"]
 
 
 def get_credentials():
