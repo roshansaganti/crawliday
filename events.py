@@ -120,24 +120,38 @@ def store_event(date, time, name, channel):
     # )
 
     # Create event
-    try:
-        service = build(
-            "calendar",
-            "v3",
-            credentials=creds,
-            cache_discovery=False,
-        )
+    attempt = 0
 
-        # Add movies to calendar
-        event = (
-            service.events()
-            .insert(calendarId=calendar_id, body=event)
-            .execute()
-        )
-        return 0
-    except HttpError as error:
-        log.error(f"An error occurred: {error}")
-        return 1
+    while True:
+        try:
+            service = build(
+                "calendar",
+                "v3",
+                credentials=creds,
+                cache_discovery=False,
+            )
+
+            # Add movies to calendar
+            event = (
+                service.events()
+                .insert(calendarId=calendar_id, body=event)
+                .execute()
+            )
+            return 0
+        except HttpError as error:
+            if error.resp.status == 429:
+                sleep_time = 2**attempt
+                log.warning(
+                    "Rate limited, sleeping for {} seconds (attempt {})".format(
+                        sleep_time, attempt + 1
+                    )
+                )
+                time.sleep(sleep_time)
+                attempt += 1
+                continue
+            else:
+                log.error(f"An error occurred: {error}")
+                return 1
 
 
 def read():
